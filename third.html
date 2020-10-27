@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href = "index.html">Назад</a>
+    <div>
+        <p>
+            This post will describe my recent work on Cranelift as part of my day job at Mozilla. In this post, I will set some context and describe the instruction selection problem. In particular, I’ll talk about a revamp to the instruction selector and backend framework in general that we’ve been working on for the last nine months or so. This work has been co-developed with my brilliant colleagues Julian Seward and Benjamin Bouvier, with significant early input from Dan Gohman as well, and help from all of the wonderful Cranelift hackers.
+Background: Cranelift
+
+So what is Cranelift?
+
+The project is a compiler framework written in Rust that is designed especially (but not exclusively) for just-in-time compilation. It’s a general-purpose compiler: its most popular use-case is to compile WebAssembly, though several other frontends exist, for example, cg_clif, which adapts the Rust compiler itself to use Cranelift. Folks at Mozilla and several other places have been developing the compiler for a few years now. It is the default compiler backend for wasmtime, a runtime for WebAssembly outside the browser, and is used in production in several other places as well.
+
+We recently flipped the switch to turn on Cranelift-based WebAssembly support in nightly Firefox on ARM64 (AArch64) machines, including most smartphones, and if all goes well, it will eventually go out in a stable Firefox release. Cranelift is developed under the umbrella of the Bytecode Alliance.
+
+In the past nine months, we have built a new framework in Cranelift for the “machine backends”, or the parts of the compiler that support particular CPU instruction sets. We also added a new backend for AArch64, mentioned above, and filled out features as needed until Cranelift was ready for production use in Firefox. This blog post sets some context and describes the design process that went into the backend-framework revamp.
+Old Backend Design: Instruction Legalizations
+
+To understand the work that we’ve done recently on Cranelift, we’ll need to zoom into the cranelift_codegen crate above and talk about how it used to work. What is this “CLIF” input, and how does the compiler translate it to machine code that the CPU can execute?
+
+Cranelift makes use of CLIF, or the Cranelift IR (Intermediate Representation) Format, to represent the code that it is compiling. Every compiler that performs program optimizations uses some form of an Intermediate Representation (IR): you can think of this like a virtual instruction set that can represent all the operations a program is allowed to do. The IR is typically simpler than real instruction sets, designed to use a small set of well-defined instructions so that the compiler can easily reason about what a program means.
+
+The IR is also independent of the CPU architecture that the compiler eventually targets; this lets much of the compiler (such as the part that generates IR from the input programming language, and the parts that optimize the IR) be reused whenever the compiler is adapted to target a new CPU architecture. CLIF is in Static Single Assignment (SSA) form, and uses a conventional control-flow graph with basic blocks (though it previously allowed extended basic blocks, these have been phased out). Unlike many SSA IRs, it represents φ-nodes with block parameters rather than explicit φ-instructions.
+
+Within cranelift_codegen, before we revamped the backend design, the program remained in CLIF throughout compilation and up until the compiler emitted the final machine code. This might seem to contradict what we just said: how can the IR be machine-independent, but also be the final form from which we emit machine code?
+        </p>
+    </div>
+</body>
+</html>
