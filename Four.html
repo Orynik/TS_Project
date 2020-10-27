@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href = "index.html">Назад</a>
+    <div>
+        <p>
+            In 2018, we launched Firefox Extension Workshop, a site for Firefox-specific extension development documentation. The site was originally built using the Ruby-based static site generator Jekyll. We had initially selected Jekyll for this project because we wanted to make it easy for editors to update the site using Markdown, a lightweight markup language.
+
+Once the site had been created and more documentation was added, the build times started to grow. Every time we made a change to the site and wanted to test it locally, it would take ten minutes or longer for the site to build. The builds took so long that we needed to increase the default time limit for CircleCI, our continuous integration and continuous delivery service, because builds were failing when they ran past ten minutes with no output.
+
+Investigating these slow builds using profiling showed that most of the time was being spent in the Liquid template rendering calls.
+
+In addition to problems with build times, there were also issues with cache-busting in local development. This meant that things like a change of images wouldn’t show up in the site without a full rebuild after clearing the local cache.
+
+As we were discussing how to best move forward, Jekyll 4 was released with features expected to improve build performance. However, an early test of porting to this version actually performed worse than the previous version. We then realized that we needed to find an alternative and port the site.
+
+Update: 05-10-2020: A Jekyll developer reached out having investigated the slow builds. The findings were that Jekyll on its own isn’t slow, the high build times in our case were primarily caused by 3rd party plugins.
+        </p>
+    </div>
+</body>
+</html>
